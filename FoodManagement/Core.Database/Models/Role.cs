@@ -19,7 +19,7 @@ namespace Core.Database.Models
         public Category? Category { get; set; }
         public ICollection<Authorized> Authorizeds { get; set; }=new HashSet<Authorized>();
 
-
+        
 
     }
 }

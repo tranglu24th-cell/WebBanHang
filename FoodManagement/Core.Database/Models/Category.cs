@@ -22,6 +22,7 @@ namespace Core.Database.Models
         public ICollection<Product> Products { get; set; }=new HashSet<Product>();
         public ICollection<Category> ChildCategories { get; set; }=new HashSet<Category>();
         public ICollection<Role> Roles { get; set; }=new HashSet<Role>();
+        
 
     }
 }
