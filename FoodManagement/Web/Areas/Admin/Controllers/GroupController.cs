@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Web.Areas.Admin.Models;
 using System.Linq.Dynamic.Core;
 using Web.Models.EF;
+using System.Text.RegularExpressions;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Web.Areas.Admin.Controllers
 {
@@ -40,5 +42,48 @@ namespace Web.Areas.Admin.Controllers
             var jsonData = new { draw = model.draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data };
             return Ok(jsonData);
         }
-    }
+        [HttpGet]
+        public async Task<IActionResult> getItem(Guid id)
+        {
+            if (_dbContext.Groups == null)
+                return NotFound();
+            var item = await _dbContext.Groups.FindAsync(id);
+            if (item == null)
+                return NotFound();
+            return Ok(item);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Save(GroupViewModel model)
+        {
+            Core.Database.Models.Group item;
+            if (model.Id == null)
+            {
+                item = new Core.Database.Models.Group();
+                item.Id= Guid.NewGuid();
+                await _dbContext.Groups.AddAsync(item);
+            }
+            else
+            {
+                item = await _dbContext.Groups.FindAsync(model.Id);
+            }
+            item.Name = model.Name;
+                await _dbContext.SaveChangesAsync();
+                return Ok(item);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var memberInGroup = await _dbContext.Members.Where(m => m.GroupId == id).FirstOrDefaultAsync();
+            if (memberInGroup == null)
+            {
+                var item = await _dbContext.Groups.FindAsync(id);
+                _dbContext.Entry(item).State = EntityState.Deleted;
+                await _dbContext.SaveChangesAsync();
+                return Ok(true);
+            }
+            return Ok(false);
+        }
+
+
+    }
 }

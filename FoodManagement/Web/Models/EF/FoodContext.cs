@@ -11,10 +11,9 @@ namespace Web.Models.EF
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<Group> Groups { get; set; }
-        public DbSet<Member> Menbers { get; set; }
+        public DbSet<Member> Members { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Role> Roles { get; set; }
-
-
+       
     }
 }
