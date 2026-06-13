@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Core.Database.Models
+@using Web.Areas.Admin.Extensions
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -172,14 +174,21 @@
             <!-- Sidebar -->
             <div class="sidebar">
                 <!-- Sidebar user panel (optional) -->
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                    <div class="image">
-                        <img src="/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-                    </div>
-                    <div class="info">
-                        <a href="#" class="d-block">Alexander Pierce</a>
-                    </div>
-                </div>
+                @{
+                    var member = Context.Session.GetObject <Member>("member");
+                    if(member != null)
+                    {
+                        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                            <div class="image">
+                                <img src="@member.Picture" class="img-circle elevation-2" alt="@member.Name">
+                            </div>
+                            <div class="info">
+                                <a href="#" class="d-block">@member.Name</a>
+                            </div>
+                        </div>
+                    }
+                }
+               
 
                 <!-- SidebarSearch Form -->
                 <div class="form-inline">
@@ -300,7 +309,17 @@
                                 
                             </ul>
                         </li>
-                       
+                        <li class="nav-item">
+                            <a href="@Url.Action("Logout", "Member", new { area = "Admin" })" class="nav-link">
+                                <i class="nav-icon fas fa-user"></i>
+                                <p>
+                                    Đăng xuất
+
+                                </p>
+                            </a>
+
+                        </li>
+
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
