@@ -43,6 +43,13 @@ namespace Web.Areas.Admin.Controllers
             return Ok(jsonData);
         }
         [HttpGet]
+        public async Task<IActionResult> getList()
+        {
+            var items = (from i in _dbContext.Groups select i);
+            var data = await items.Select(i=> new {i.Id, i.Name}).ToListAsync();
+            return Ok(data);
+        }
+        [HttpGet]
         public async Task<IActionResult> getItem(Guid id)
         {
             if (_dbContext.Groups == null)

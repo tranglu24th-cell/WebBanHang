@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Nhóm quyền";
+    ViewBag.Title = "Thành viên";
     Layout = "~/Areas/Admin/Views/Shared/_Admin.cshtml";
 }
 <div class="card">
@@ -12,7 +12,9 @@
             <thead>
                 <tr>
                     <th style="width: 10px">#</th>
-                    <th>Tên nhóm</th>
+                    <th>Tên thành viên</th>
+                    <th>Nhóm quyền</th>
+                    <th>Truy cập gần nhất</th>
                     <th style="width: 40px"></th>
                 </tr>
             </thead>
@@ -35,9 +37,32 @@
                <form id="Item">
                    <input type="hidden" id="Id" name="Id"/>
                    <div class="form-group">
-                       <label for="Name">Tên nhóm quyền</label>
+                       <label for="Name">Tên thành viên</label>
                        <input type="text" class="form-control" id="Name" name="Name"/>
                    </div>
+                    <div class="form-group">
+                        <label for="Picture">Hình đại diện</label>
+                        <input type="file" class="form-control" id="Picture" name="Picture" />
+                        <img id="user-picture" style="display: none" src=""/>
+                    </div>
+                    <div class="form-group">
+                        <label for="LoginName">Tên đăng nhập</label>
+                        <input type="text" class="form-control" id="LoginName" name="LoginName" />
+                    </div>
+                    <div class="form-group">
+                        <label for="Password">Mật khẩu</label>
+                        <input type="password" class="form-control" id="Password" name="Password" />
+                    </div>
+                    <div class="form-group">
+                        <label for="Email">Hộp thư điện tử</label>
+                        <input type="email" class="form-control" id="Email" name="Email" />
+                    </div>
+                    <div class="form-group">
+                        <label for="GroupId">Nhóm quyền</label>
+                        <select id="GroupId" name="GroupId" class="form-control">
+                            <option value="">---Chọn---</option>
+                        </select>
+                    </div>
                </form>
             </div>
             <div class="modal-footer justify-content-between">
@@ -57,6 +82,10 @@
         div.dt-buttons {
             float: right;
         }
+        img.user-picture{
+            width: 32px;
+            height: 32px;
+        }
     </style>
 }
 @section Js {
@@ -65,6 +94,7 @@
 	<script src="/plugins/datatables-buttons/js/datatables.buttons.min.js"></script>
 	<script src="/plugins/toastr/toastr.min.js"></script>
 	<script src="/plugins/sweetalert2/sweetalert2.all.min.js"></script>
+	<script src="/plugins/moment/moment.min.js"></script>
     <script>
         $(function (){
            var items = $("#items").DataTable({
@@ -72,7 +102,7 @@
                "processing": true,
                "serverSide": true,
                "ajax":{
-                   "url": "/Admin/Group/GetList",
+                   "url": "/Admin/Member/GetList",
                    "type": "POST",
 				   "dataType": "json"
                },
@@ -81,7 +111,17 @@
                        "data": null, "render": function(data, type, row, meta) { return meta.row + 1;}
                    },
                    {
-                       "data": "name"
+                       "render": function(data, type, row, meta){
+                           return "<img class='user-picture' src='"+ row.picture +"' /> " + row.name;
+                       }
+                   },
+                   {
+                       "data": "groupName"
+                   },
+                   {
+                       "data": "lastLogin", "render": function (data, type, row, meta){
+                           return moment(data).isValid() ?moment(data).format("DD/MM/YYYY") : "Chưa đăng nhập";
+                       }
                    },
                    {
                        "render": function (data, type, row, meta){
@@ -100,33 +140,54 @@
                ],
                "buttons": [
                    {
-                       text: '<i class="fa fa-pluss mr-2"></i>Thêm nhóm',
+                       text: '<i class="fa fa-pluss mr-2"></i>Thêm thành viên',
                        className: 'btn btn-info pb-1',
                        action: function(e, dt, node, config){
                            $("#modal-default form#Item")[0].reset();
                            $("#Id").val("");
+                           $("#user-picture").attr("src", '').hide();
                            $("#modal-default").modal('show');
                        }
                    }
                ]
            });
-           $(document).on("click", "a.btnEdit", function(){
+            $(document).on("click", "a.btnEdit", function(){
                let id = $(this).data("id");
-               $.getJSON("/Admin/Group/GetItem",
+               $.getJSON("/Admin/Member/GetItem",
                    {
                        id: id
                    }, function(item){
                        $("#Id").val(item.id);
                        $("#Name").val(item.name);
+                       $("#user-picture").attr("src", item.picture).show();
+                       $("#LoginName").val(item.loginName);
+                       $("#Email").val(item.email);
+                       $("#GroupId").val(item.groupId).change();
                        $("#modal-default").modal('show');
                    });
-           })
+            })
+            $.getJSON("/Admin/Group/getList",
+                {},
+                function (data){
+                    data.forEach((item) => {
+                        var o = new Option(item.name, item.id);
+                            $("#GroupId").append(o);
+                    })
+                });
+            
             $(".btnSave").on('click', function () {
+                var form = $("#Item")[0];
+                var formData=new FormData(form);
+                var file = $('input[type=file]')[0].files[0];
+                formData.append("Picture", file);
+
                 $.ajax({
-                    data: $("#Item").serialize(),
-                    url: "/Admin/Group/Save",
+                    data: formData,
+                    url: "/Admin/Member/Save",
                     type: "POST",
-                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    processData: false,
+                    contentType: false,
+                    
                     success: function (item) {
                         $("#modal-default").modal('hide');
                         toastr.success("Thông báo: Lưu thành công!!");
@@ -146,15 +207,15 @@
                     cancelButtonText: 'Hủy'
                 }).then(function (result) {
                     if (result.isConfirmed) {
-                        $.get("/Admin/Group/Delete",
+                        $.get("/Admin/Member/Delete",
                             {
                                 id: id
                             }, function (data) {
                                 if (data == true) {
-                                    toastr.success('Thông báo: Xóa nhóm quyền thành công.');
+                                    toastr.success('Thông báo: Xóa người dùng thành công.');
                                     items.ajax.reload();
                                 } else {
-                                    toastr.error('Lỗi: Kiểm tra lại ràng buộc toàn vẹn của nhóm quyền.')
+                                    toastr.error('Lỗi: Kiểm tra lại ràng buộc toàn vẹn của người dùng.')
                                 }
                             })
                     }
