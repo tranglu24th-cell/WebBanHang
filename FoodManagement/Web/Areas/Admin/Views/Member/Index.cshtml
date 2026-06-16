@@ -8,7 +8,7 @@
     </div>
     <!-- /.card-header -->
     <div class="card-body table-responsive">
-        <table id ="items" class="table table-bordered table-striped">
+        <table id="items" class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th style="width: 10px">#</th>
@@ -104,7 +104,10 @@
                "ajax":{
                    "url": "/Admin/Member/GetList",
                    "type": "POST",
-				   "dataType": "json"
+				   "dataType": "json",
+                   "error": function(xhr, error, code){
+                       toastr.error("Lỗi: Không có quyền truy cập chứ năng này.");
+                   }
                },
                "columns":[
                    {
@@ -140,7 +143,7 @@
                ],
                "buttons": [
                    {
-                       text: '<i class="fa fa-pluss mr-2"></i>Thêm thành viên',
+                       text: '<i class="fa fa-plus mr-2"></i>Thêm thành viên',
                        className: 'btn btn-info pb-1',
                        action: function(e, dt, node, config){
                            $("#modal-default form#Item")[0].reset();
@@ -164,6 +167,8 @@
                        $("#Email").val(item.email);
                        $("#GroupId").val(item.groupId).change();
                        $("#modal-default").modal('show');
+                   }).fail(function(){
+                       toastr.error("Lỗi: Không có quyền truy cập chức năng này.");
                    });
             })
             $.getJSON("/Admin/Group/getList",
@@ -192,6 +197,9 @@
                         $("#modal-default").modal('hide');
                         toastr.success("Thông báo: Lưu thành công!!");
                         items.ajax.reload();
+                    },
+                    error: function(){
+                        toastr.error("Lỗi: Không có quyền truy cập chức năng này.");
                     }
                 })
             })
@@ -217,6 +225,8 @@
                                 } else {
                                     toastr.error('Lỗi: Kiểm tra lại ràng buộc toàn vẹn của người dùng.')
                                 }
+                            }).fail(function(){
+                                toastr.error("Lỗi: Không có quyền truy cập chức năng này.");
                             })
                     }
                 })

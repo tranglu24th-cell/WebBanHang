@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Dynamic.Core;
 using System.Security.Cryptography;
 using System.Text;
+using Web.Areas.Admin.Attributes;
 using Web.Areas.Admin.Extensions;
 using Web.Areas.Admin.Models;
 using Web.Models.EF;
@@ -20,6 +22,7 @@ namespace Web.Areas.Admin.Controllers
             _dbContext = dbContext;
             _environment = environment;
         }
+        [Authorized(Code = "view-members")]
         [HttpPost]
         public async Task<IActionResult> getList(jDatatable model)
         {
@@ -49,6 +52,7 @@ namespace Web.Areas.Admin.Controllers
         {
             return View();
         }
+        [Authorized(Code = "edit-member")]
         [HttpGet]
         public async Task<IActionResult> getItem(Guid id)
         {
@@ -59,7 +63,9 @@ namespace Web.Areas.Admin.Controllers
                 return NotFound();
             return Ok(item);
         }
+        [Authorized(Code = "save-member")]
         [HttpPost]
+
         public async Task<IActionResult> Save(MemberViewModel model, IFormFile Picture)
         {
             Core.Database.Models.Member item;
@@ -96,6 +102,7 @@ namespace Web.Areas.Admin.Controllers
             await _dbContext.SaveChangesAsync();
             return Ok(item);
         }
+        [Authorized(Code = "delete-member")]
         [HttpGet]
         public async Task<IActionResult> Delete(Guid id)
         {
@@ -122,6 +129,8 @@ namespace Web.Areas.Admin.Controllers
             if (member != null) 
             { 
                 HttpContext.Session.SetObject("member", member);
+                var codes = _dbContext.Authorizeds.Where(i=>i.GroupId == member.GroupId).Select(i=>i.Role.Code).ToList();
+                HttpContext.Session.SetObject("codes", codes);
                 return RedirectToAction("Index", "Home");
             }
             return RedirectToAction("Login", "Member");
