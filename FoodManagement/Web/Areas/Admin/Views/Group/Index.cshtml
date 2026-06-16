@@ -49,6 +49,28 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
+<div class="modal fade" id="modal-authorized">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Phân quyền</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="GroupId" name="GroupId"/>
+                <select id="CategoryId" name="CategoryId" class="form-control">
+                   <option value="">--- Chọn nhóm quyền ---</option>
+               </select>
+               <div id="RoleList"></div>
+            </div>
+           
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
 @section Css{
 	<link href="/plugins/datatables-bs4/css/datatables.bootstrap4.min.css" rel="stylesheet" />
 	<link href="/plugins/toastr/toastr.min.css" rel="stylesheet" />
@@ -76,7 +98,7 @@
                    "type": "POST",
                    "dataType": "json",
                    "error": function(xhr, error, code){
-                       toastr.error("Lỗi: Không có quyền truy cập chứ năng này.");
+                       toastr.error("Lỗi: Không có quyền truy cập chức năng này.");
                    }
                },
                "columns":[
@@ -95,6 +117,8 @@
                                '<div class="dropdown-menu" role="menu" style="">' +
                                '<a class="dropdown-item text-primary btnEdit" href="#" data-id="' + row.id + '"><i class="fas fa-pencil-alt mr-3"></i>Cập nhật</a>' +
                                '<a class="dropdown-item text-danger btnDelete" href="#" data-id="' + row.id + '"><i class="fas fa-trash mr-3"></i>Xóa</a>' +
+                               '<div class="dropdown-divier"></div>' +
+                               '<a class = "dropdown-item text-warning btnAuthorized" href="#" data-id="'+ row.id+ '"><i class="fa fa-unlock-alt mr-3"></i>Phân quyền</a>' +
                                '</div>' +
                                '</div>';
                            return tool;
@@ -170,6 +194,52 @@
                     }
                 })
             })
+            function LoadCategory(){
+                if ($('#CategoryId > option').length <= 1){
+                    $.getJSON("/Admin/Category/GetChild", {
+                        parentId : "D951DD74-A153-408C-AB60-44E51BB51F47"
+                    }, function (categories){
+                        categories.forEach((item) => {
+                            var o = new Option(item.name, item.id);
+                            $("#CategoryId").append(o);
+                        })
+                    })
+                }
+            }
+            $(document).on("click", "a.btnAuthorized", function(){
+                let id = $(this).data("id");
+                $("#GroupId").val(id);
+                LoadCategory();
+                $("#modal-authorized").modal('show');
+            });
+            $("#CategoryId").change(function(){
+                let CategoryId = $(this).val();
+                let GroupId = $("#GroupId").val();
+                $.getJSON("/Admin/Role/GetAllByCategory", {
+                    CategoryId : CategoryId
+                }, function(roles){
+                    $("#RoleList").html("");
+                    roles.forEach((item) => {
+                        $('<div class="custom-control custom-switch">' +
+                            '<input type="checkbox" class="custom-control-input Role" ' + (item.groupId == GroupId ? "checked" : "") + ' id="' + item.id + '" data-id="' + item.id + '">' +
+                            '<label class="custom-control-label" for="' + item.id + '">' + item.name + '</label>' +
+                            '</div>').appendTo($("#RoleList"));
+                    })
+
+                })
+            });
+            $(document).on("change", "input.Role", function () {
+                let RoleId = $(this).data("id");
+                let GroupId = $("#GroupId").val();
+                $.get("/Admin/Authorized/Save", {
+                    GroupId: GroupId,
+                    RoleId: RoleId
+                }, function (data) {
+                    toastr.success('Thông báo: Cập nhật quyền thành công.');
+                }).fail(function () {
+                    toastr.error('Lỗi: Không có quyền truy cập chức năng này.');
+                })
+            });
           
         });
     </script>

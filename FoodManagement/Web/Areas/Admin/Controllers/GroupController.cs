@@ -54,6 +54,7 @@ namespace Web.Areas.Admin.Controllers
             var data = await items.Select(i=> new {i.Id, i.Name}).ToListAsync();
             return Ok(data);
         }
+       
         [Authorized(Code = "edit-group")]
         [HttpGet]
         public async Task<IActionResult> getItem(Guid id)

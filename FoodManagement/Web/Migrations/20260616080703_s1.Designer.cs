@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Web.Models.EF;
 
@@ -11,9 +12,11 @@ using Web.Models.EF;
 namespace Web.Migrations
 {
     [DbContext(typeof(FoodContext))]
-    partial class FoodContextModelSnapshot : ModelSnapshot
+    [Migration("20260616080703_s1")]
+    partial class s1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -86,14 +89,6 @@ namespace Web.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Authorized");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("d1f23f1b-5b2a-4b59-88cc-2d04533a4967"),
-                            GroupId = new Guid("d0cfdf00-afc9-4567-a9ec-0f0db44a18bd"),
-                            RoleId = new Guid("b5f8852e-1a0f-4fee-a821-1c982c33f9aa")
-                        });
                 });
 
             modelBuilder.Entity("Core.Database.Models.Category", b =>
@@ -127,47 +122,6 @@ namespace Web.Migrations
                     b.HasIndex("ParentId");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("5ea90800-ec76-4e3c-83f5-0d7446510385"),
-                            CreatedBy = new Guid("fd48367d-f4a1-4e0b-a1f6-9d72afcebcc9"),
-                            CreatedOn = new DateTime(2026, 6, 16, 22, 8, 17, 304, DateTimeKind.Local).AddTicks(7020),
-                            Name = "Root"
-                        },
-                        new
-                        {
-                            Id = new Guid("d951dd74-a153-408c-ab60-44e51bb51f47"),
-                            CreatedBy = new Guid("fd48367d-f4a1-4e0b-a1f6-9d72afcebcc9"),
-                            CreatedOn = new DateTime(2026, 6, 16, 22, 8, 17, 304, DateTimeKind.Local).AddTicks(7023),
-                            Name = "Authorized",
-                            ParentId = new Guid("5ea90800-ec76-4e3c-83f5-0d7446510385")
-                        },
-                        new
-                        {
-                            Id = new Guid("74d373c3-dcf6-4634-8a46-7700b82dbe4d"),
-                            CreatedBy = new Guid("fd48367d-f4a1-4e0b-a1f6-9d72afcebcc9"),
-                            CreatedOn = new DateTime(2026, 6, 16, 22, 8, 17, 304, DateTimeKind.Local).AddTicks(7027),
-                            Name = "Nhóm quyền",
-                            ParentId = new Guid("d951dd74-a153-408c-ab60-44e51bb51f47")
-                        },
-                        new
-                        {
-                            Id = new Guid("86700b84-de54-426a-9748-da1bce88e424"),
-                            CreatedBy = new Guid("fd48367d-f4a1-4e0b-a1f6-9d72afcebcc9"),
-                            CreatedOn = new DateTime(2026, 6, 16, 22, 8, 17, 304, DateTimeKind.Local).AddTicks(7030),
-                            Name = "Article",
-                            ParentId = new Guid("5ea90800-ec76-4e3c-83f5-0d7446510385")
-                        },
-                        new
-                        {
-                            Id = new Guid("6b04bd80-c414-4836-ac8c-ca215b574f41"),
-                            CreatedBy = new Guid("fd48367d-f4a1-4e0b-a1f6-9d72afcebcc9"),
-                            CreatedOn = new DateTime(2026, 6, 16, 22, 8, 17, 304, DateTimeKind.Local).AddTicks(7033),
-                            Name = "Product",
-                            ParentId = new Guid("5ea90800-ec76-4e3c-83f5-0d7446510385")
-                        });
                 });
 
             modelBuilder.Entity("Core.Database.Models.Group", b =>
@@ -184,13 +138,6 @@ namespace Web.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Group");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("d0cfdf00-afc9-4567-a9ec-0f0db44a18bd"),
-                            Name = "Quản trị viên"
-                        });
                 });
 
             modelBuilder.Entity("Core.Database.Models.Member", b =>
@@ -243,19 +190,6 @@ namespace Web.Migrations
                     b.HasIndex("GroupId");
 
                     b.ToTable("Member");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("fd48367d-f4a1-4e0b-a1f6-9d72afcebcc9"),
-                            CreatedOn = new DateTime(2026, 6, 16, 22, 8, 17, 304, DateTimeKind.Local).AddTicks(6958),
-                            Email = "tranglu.24th@sv.dla.edu.vn",
-                            GroupId = new Guid("d0cfdf00-afc9-4567-a9ec-0f0db44a18bd"),
-                            LoginName = "tranglu",
-                            Name = "Lâm Uyên Trang",
-                            Password = "c4ca4238a0b923820dcc509a6f75849b",
-                            Picture = "/img/users/uyentrang.jpg"
-                        });
                 });
 
             modelBuilder.Entity("Core.Database.Models.Product", b =>
@@ -317,36 +251,6 @@ namespace Web.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Role");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("b5f8852e-1a0f-4fee-a821-1c982c33f9aa"),
-                            CategoryId = new Guid("74d373c3-dcf6-4634-8a46-7700b82dbe4d"),
-                            Code = "view-groups",
-                            Name = "Xem danh sách"
-                        },
-                        new
-                        {
-                            Id = new Guid("1c229f8c-8d58-4de2-b7a5-96dde1bb9263"),
-                            CategoryId = new Guid("74d373c3-dcf6-4634-8a46-7700b82dbe4d"),
-                            Code = "edit-group",
-                            Name = "Cập nhật"
-                        },
-                        new
-                        {
-                            Id = new Guid("a03ba290-d4a5-45cd-a255-be0a8ed3851d"),
-                            CategoryId = new Guid("74d373c3-dcf6-4634-8a46-7700b82dbe4d"),
-                            Code = "save-group",
-                            Name = "Lưu"
-                        },
-                        new
-                        {
-                            Id = new Guid("70b8d810-029d-438f-9b41-f5ed8cbd7a31"),
-                            CategoryId = new Guid("74d373c3-dcf6-4634-8a46-7700b82dbe4d"),
-                            Code = "delete-group",
-                            Name = "Xóa"
-                        });
                 });
 
             modelBuilder.Entity("Core.Database.Models.Authorized", b =>
