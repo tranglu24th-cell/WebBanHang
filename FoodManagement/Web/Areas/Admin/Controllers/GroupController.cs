@@ -82,8 +82,9 @@ namespace Web.Areas.Admin.Controllers
                 item = await _dbContext.Groups.FindAsync(model.Id);
             }
             item.Name = model.Name;
-                await _dbContext.SaveChangesAsync();
-                return Ok(item);
+            
+            await _dbContext.SaveChangesAsync();
+            return Ok(item);
         }
         [Authorized(Code = "delete-group")]
         [HttpGet]
