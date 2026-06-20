@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Web.Models.EF;
 
@@ -11,9 +12,11 @@ using Web.Models.EF;
 namespace Web.Migrations
 {
     [DbContext(typeof(FoodContext))]
-    partial class FoodContextModelSnapshot : ModelSnapshot
+    [Migration("20260620055657_s6")]
+    partial class s6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -86,7 +89,7 @@ namespace Web.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("3988eb07-e5c0-4fc7-adbc-6c2eee40cdcb"),
+                            Id = new Guid("e7b7bfa3-aa7c-4837-b86a-fd61b2b12015"),
                             GroupId = new Guid("d0cfdf00-afc9-4567-a9ec-0f0db44a18bd"),
                             RoleId = new Guid("b5f8852e-1a0f-4fee-a821-1c982c33f9aa")
                         });
@@ -129,14 +132,14 @@ namespace Web.Migrations
                         {
                             Id = new Guid("5ea90800-ec76-4e3c-83f5-0d7446510385"),
                             CreatedBy = new Guid("fd48367d-f4a1-4e0b-a1f6-9d72afcebcc9"),
-                            CreatedOn = new DateTime(2026, 6, 20, 17, 46, 49, 752, DateTimeKind.Local).AddTicks(3201),
+                            CreatedOn = new DateTime(2026, 6, 20, 12, 56, 52, 998, DateTimeKind.Local).AddTicks(5552),
                             Name = "Root"
                         },
                         new
                         {
                             Id = new Guid("d951dd74-a153-408c-ab60-44e51bb51f47"),
                             CreatedBy = new Guid("fd48367d-f4a1-4e0b-a1f6-9d72afcebcc9"),
-                            CreatedOn = new DateTime(2026, 6, 20, 17, 46, 49, 752, DateTimeKind.Local).AddTicks(3205),
+                            CreatedOn = new DateTime(2026, 6, 20, 12, 56, 52, 998, DateTimeKind.Local).AddTicks(5556),
                             Name = "Authorized",
                             ParentId = new Guid("5ea90800-ec76-4e3c-83f5-0d7446510385")
                         },
@@ -144,7 +147,7 @@ namespace Web.Migrations
                         {
                             Id = new Guid("74d373c3-dcf6-4634-8a46-7700b82dbe4d"),
                             CreatedBy = new Guid("fd48367d-f4a1-4e0b-a1f6-9d72afcebcc9"),
-                            CreatedOn = new DateTime(2026, 6, 20, 17, 46, 49, 752, DateTimeKind.Local).AddTicks(3210),
+                            CreatedOn = new DateTime(2026, 6, 20, 12, 56, 52, 998, DateTimeKind.Local).AddTicks(5561),
                             Name = "Nhóm quyền",
                             ParentId = new Guid("d951dd74-a153-408c-ab60-44e51bb51f47")
                         },
@@ -152,7 +155,7 @@ namespace Web.Migrations
                         {
                             Id = new Guid("86700b84-de54-426a-9748-da1bce88e424"),
                             CreatedBy = new Guid("fd48367d-f4a1-4e0b-a1f6-9d72afcebcc9"),
-                            CreatedOn = new DateTime(2026, 6, 20, 17, 46, 49, 752, DateTimeKind.Local).AddTicks(3214),
+                            CreatedOn = new DateTime(2026, 6, 20, 12, 56, 52, 998, DateTimeKind.Local).AddTicks(5570),
                             Name = "Article",
                             ParentId = new Guid("5ea90800-ec76-4e3c-83f5-0d7446510385")
                         },
@@ -160,7 +163,7 @@ namespace Web.Migrations
                         {
                             Id = new Guid("6b04bd80-c414-4836-ac8c-ca215b574f41"),
                             CreatedBy = new Guid("fd48367d-f4a1-4e0b-a1f6-9d72afcebcc9"),
-                            CreatedOn = new DateTime(2026, 6, 20, 17, 46, 49, 752, DateTimeKind.Local).AddTicks(3218),
+                            CreatedOn = new DateTime(2026, 6, 20, 12, 56, 52, 998, DateTimeKind.Local).AddTicks(5577),
                             Name = "Product",
                             ParentId = new Guid("5ea90800-ec76-4e3c-83f5-0d7446510385")
                         });
@@ -205,6 +208,9 @@ namespace Web.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("RroductId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<double?>("price")
@@ -297,7 +303,7 @@ namespace Web.Migrations
                         new
                         {
                             Id = new Guid("fd48367d-f4a1-4e0b-a1f6-9d72afcebcc9"),
-                            CreatedOn = new DateTime(2026, 6, 20, 17, 46, 49, 752, DateTimeKind.Local).AddTicks(3158),
+                            CreatedOn = new DateTime(2026, 6, 20, 12, 56, 52, 998, DateTimeKind.Local).AddTicks(5394),
                             Email = "tranglu.24th@sv.dla.edu.vn",
                             GroupId = new Guid("d0cfdf00-afc9-4567-a9ec-0f0db44a18bd"),
                             LoginName = "tranglu",
@@ -313,14 +319,11 @@ namespace Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("CreatedOn")
+                    b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("UpdatedOn")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
