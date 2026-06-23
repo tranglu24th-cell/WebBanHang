@@ -469,5 +469,16 @@ h4, h5, h6, .h4, .h5, .h6 {
 /*** Footer End ***/
 
 
+/* T?m ho?c thêm m?i ðo?n này vào cu?i file */
+/*.event .event-img {
+    position: relative;
+    width: 100%;
+    height: 250px;*/ /* Ép t?t c? các khung ?nh cao b?ng nhau (250px) */
+    /*overflow: hidden;*/ /* C?t b? ph?n ?nh b? th?a ra ngoài */
+/*}
 
-
+.event .event-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;*/ /* Gi? nguyên t? l?, không làm méo h?nh */
+/*}*/
