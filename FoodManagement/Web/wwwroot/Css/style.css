@@ -163,7 +163,7 @@ h4, h5, h6, .h4, .h5, .h6 {
     height: 100%;
     top: 0;
     left: 0;
-    background: rgba(212, 167, 98, 0.7);
+    background: rgba(185, 139, 115, 0.75);
     border-radius: 8px;
     transition: 0.5s;
     opacity: 0;
@@ -197,10 +197,10 @@ h4, h5, h6, .h4, .h5, .h6 {
     transition: 1s;
 }
 
-.service-item:hover .service-content::after {
+/*.service-item:hover .service-content::after {
     height: 100%;
     opacity: 1;
-}
+}*/
 
 .service-item .service-content-icon {
     position: relative;
@@ -216,7 +216,7 @@ h4, h5, h6, .h4, .h5, .h6 {
     color: var(--bs-dark) !important;
 }
 
-.service-item:hover .service-content-icon p {
+/*.service-item:hover .service-content-icon p {
     color: var(--bs-white);
 }
 
@@ -224,7 +224,7 @@ h4, h5, h6, .h4, .h5, .h6 {
     background: var(--bs-white);
     color: var(--bs-dark);
 }
-
+*/
 .service-item .service-content-icon a.btn-primary {
     transition: 1s !important;
 }
@@ -482,3 +482,83 @@ h4, h5, h6, .h4, .h5, .h6 {
         height: 100%;
         object-fit: cover;*/ /* Gi? nguyên t? l?, không làm méo h?nh */
 /*}*/
+/* Bakery vintage style */
+:root {
+    --bs-primary: #B98B73 !important;
+    --bs-light: #FFF8F0 !important;
+}
+.card,
+.service-item,
+.product-item {
+    border-radius: 24px;
+    overflow: hidden;
+}
+
+
+img {
+    object-fit: cover;
+}
+
+
+.event-img img,
+.menu img {
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 30px;
+}
+
+
+.btn {
+    border-radius: 999px;
+}
+.hero img {
+    border-radius: 40px;
+}
+
+
+.hero h1 {
+    font-size: 60px;
+    line-height: 1.2;
+}
+
+
+.hero p {
+    max-width: 500px;
+    font-size: 18px;
+}
+.hero-banner {
+    height: 650px;
+    background-image: linear-gradient( rgba(255,248,240,.35), rgba(255,248,240,.55) ), url('/img/banner-banh.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+}
+
+
+.hero-content {
+    max-width: 700px;
+    margin: auto;
+}
+
+
+    .hero-content h1 {
+        color: #4b3832;
+        font-size: 65px;
+        font-weight: 800 !important;
+    }
+
+
+    .hero-content p {
+        font-size: 18px;
+    }
+
+
+.service-content-icon i {
+    color: #B98B73 !important;
+}
+
+
+.service-item p {
+    color: #6b5b53;
+}
